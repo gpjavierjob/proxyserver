@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  squid:
+    image: gpjavierjob/alpine-squid:6.6
+    environment:
+      - TZ='America/Montevideo'
+    ports:
+      - '3128:3128'
+    volumes:
+      - '/etc/squid/${CLIENT_NAME}/conf.d:/etc/squid/conf.d'
+      - '/var/squid/${CLIENT_NAME}/cache:/var/spool/squid'
+      - '/var/squid/${CLIENT_NAME}/logs:/var/log/squid'
