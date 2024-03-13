@@ -29,6 +29,8 @@ done
 [ -z "$client" ] && usage
 [ -z "$container_name" ] && usage
 
+script_dir="$(dirname "$(readlink -f "$0")")"
+
 # Undoing the container specific configuration
 if [ $verbose -eq $TRUE ]; then
   ("$script_dir/$container_name/undo-extra-config.sh" "-v" "-c" "$client")
