@@ -1,0 +1,8 @@
+client=javier
+ips=172.17.0.1
+username=javier
+password=javier
+timezone=
+image_tag=
+container_name=
+microk8s=0

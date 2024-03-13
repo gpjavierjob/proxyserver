@@ -29,5 +29,5 @@ Para estos archivos y directorios se crearán los siguientes volúmenes:
 Para ejecutar el contenedor:
 
 ```shell
- docker run -d --name jgp-squid -p 3128:3128 -e TZ=${TIME_ZONE} -v /app/squid/${CLIENT_NAME}/conf.d:/etc/squid/conf.d -v /app/squid/${CLIENT_NAME}/logs:/var/log/squid -v /app/squid/${CLIENT_NAME}/cache:/var/spool/squid gpjavierjob/alpine-squid:6.6
+ docker run -d --name jgp-squid -p 3128:3128 -e TZ=${TIME_ZONE} -v /etc/squid/${CLIENT_NAME}/conf.d:/etc/squid/conf.d -v /var/squid/${CLIENT_NAME}/logs:/var/log/squid -v /var/squid/${CLIENT_NAME}/cache:/var/spool/squid gpjavierjob/alpine-squid:6.6
 ```

@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: javier-ubuntu-squid-deploy
+  labels:
+    app: javier-ubuntu-squid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javier-ubuntu-squid
+  template:
+    metadata:
+      labels:
+        app: javier-ubuntu-squid
+    spec:
+      volumes:
+        - name: javier-ubuntu-squid-cache
+          emptyDir:
+            sizeLimit: 13.4Gi
+        - name: javier-ubuntu-squid-log
+          emptyDir: 
+            sizeLimit: 200Mi
+        - name: javier-ubuntu-squid-snip
+          hostPath:
+            path: /etc/squid/javier/conf.d
+            type: Directory
+        - name: javier-ubuntu-squid-conf
+          hostPath:
+            path: /etc/squid/javier/squid.conf
+            type: File
+      containers:
+      - name: javier-ubuntu-squid
+        image: localhost:32000/ubuntu-squid:5.2-22.04_beta
+        ports:
+        - containerPort: 3128
+        resources:
+          limits:
+            memory: "256Mi"  # Maximum memory allowed - 13,4 GB of cache size (10 GB + 25% for indexing)
+            cpu: "200m"       # Maximum CPU allowed (200 milliCPU)
+          requests:
+            memory: "128Mi"  # Initial memory request - 6,7 GB of cache size (5 GB + 25% for indexing)
+            cpu: "100m"       # Initial CPU request        
+        volumeMounts:
+          - name: javier-ubuntu-squid-log
+            mountPath: "/var/log/squid"
+          - name: javier-ubuntu-squid-cache
+            mountPath: "/var/spool/squid"
+          - name: javier-ubuntu-squid-snip
+            mountPath: "/etc/squid/conf.d"
+          - name: javier-ubuntu-squid-conf
+            mountPath: "/etc/squid/squid.conf"
+      # - name: tailer
+      #   image: busybox
+      #   command:
+      #   - "/bin/sh"
+      #   - "-c"
+      #   args:
+      #     - tail -F /var/log/squid/access.log
+      #   volumeMounts:
+      #     - name: log-dir
+      #       mountPath: "/var/log/squid"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: javier-ubuntu-squid-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: javier-ubuntu-squid
+  ports:
+    - protocol: TCP
+      port: 3128
+      targetPort: 3128

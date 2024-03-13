@@ -1,28 +1,48 @@
-# hadolint ignore=DL3007
-FROM alpine:latest
+# Crea una imagen de Squid sobre de Alpine Linux. Se definen dos variables
+# de compilación que, si son utilizadas, permiten indicar las versiones de 
+# Alpine Linux y Squid a utilizar.
+#   ALPINE_VERSION:     Versión de Alpine Linux.
+#   SQUID_VERSION:      Versión de Squid.
+# De forma predeterminada instala Squid 6.6-r0 sobre alpine:latest
+ARG ALPINE_VERSION=latest
 
-ENV container docker
+# hadolint ignore=DL3007
+FROM "alpine:$ALPINE_VERSION"
 
 LABEL maintainer="Javier Gómez <gpjavierjob@gmail.com>"
 
+ENV SQUID_CACHE_DIR=/var/spool/squid \
+    SQUID_LOG_DIR=/var/log/squid \
+    SQUID_SNIPPETS_DIR=/etc/squid/conf.d \
+    SQUID_USER=squid \
+    TZ=UTC
+
 COPY files/uid-entrypoint.sh /usr/local/bin/
 
-# hadolint ignore=DL3018
-RUN apk --no-cache add ca-certificates squid tzdata \
-    && chmod 755 /usr/local/bin/uid-entrypoint.sh \
-    && mkdir -p /etc/squid/conf.d /var/log/squid /var/cache/squid \
-    && chgrp -R 0 /var/log/squid /var/cache/squid \
-    && chmod -R g=u /etc/passwd /var/log/squid /var/cache/squid
+ARG SQUID_VERSION=6.6-r0
 
-ENV TZ=UTC
+# hadolint ignore=DL3018
+RUN apk "--no-cache" "add" "ca-certificates" "squid=$SQUID_VERSION" "tzdata" \
+    && chmod 755 /usr/local/bin/uid-entrypoint.sh \
+    # && addgroup -S "$SQUID_USER" && adduser -S -D -H "$SQUID_USER" "$SQUID_USER" \
+    && mkdir "-p" "$SQUID_SNIPPETS_DIR" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR" \
+    && chown "-R" "$SQUID_USER:" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
+
+    # && chgrp -R 0 "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR" \
+    # && chmod -R g=u /etc/passwd "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
+
+    # && chmod "-R" "755" "$SQUID_LOG_DIR" \
+    # # && adduser "-SDH" "-u" "$SQUID_USER_ID" "$SQUID_USER" \
+    # && chown "-R" "$SQUID_USER:" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
+    # # && chown "-R" "$SQUID_USER:$SQUID_USER_GROUP" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
 
 COPY files/squid.conf /etc/squid/
-COPY files/squid-docker.conf /etc/squid/conf.d/
-COPY files/client-ips.conf /etc/squid/conf.d/
-COPY files/passwords /etc/squid/conf.d/
+COPY files/snippet.conf /etc/squid/conf.d/
 
 ENTRYPOINT ["uid-entrypoint.sh"]
 
-USER 10010
+USER "$SQUID_USER"
+
 EXPOSE 3128
+
 CMD ["squid", "-N"]

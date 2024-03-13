@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squid-service  # Modificar
+spec:
+  type: LoadBalancer
+  selector:
+    app: squid  # Modificar
+  ports:
+    - protocol: TCP
+      port: 3128
+      targetPort: 3128
