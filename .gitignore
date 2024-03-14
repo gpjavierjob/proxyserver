@@ -1,4 +1,4 @@
 /.vscode/
+/deployment/microk8s/
 deployment/installs
 deployment/installs.bkp
-/deployment/microk8s/
