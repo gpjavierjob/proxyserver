@@ -42,7 +42,7 @@ if [ $? -gt 0 ]; then
   return 1
 fi
 
-echo "Removing the configuration files and directories from the host ... "
+echo -n "Removing the configuration files and directories from the host ... "
 
 script_dir="$(dirname "$(readlink -f "$0")")"
 

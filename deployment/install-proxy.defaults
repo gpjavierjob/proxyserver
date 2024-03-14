@@ -5,4 +5,6 @@ password=javier
 timezone=
 image_tag=
 container_name=
-microk8s=0
+_image_tag=gpjavierjob/alpine-squid:6.6-r0
+_container_name=alpine-squid
+microk8s=1

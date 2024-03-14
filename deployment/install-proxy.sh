@@ -149,13 +149,13 @@ else
   # Creating the tag for importing to Microk8s register 
   # First, remove username from image tag and then, prefix the Microk8s register address
   reg_tag="localhost:32000/$container_name:$(echo "$image_tag" | awk -F '/' '{print $2}' | awk -F ':' '{print $2}')"
-  
+
   # Get a random id
   id="$(echo $(date +%s%N) | sha256sum | head -c 10)"
   
   # Deployment files path
   deploy_template_path="$script_dir/k8s-deployment.template.yaml"
-  deploy_file_path="$script_dir/files/k8s-deployment_$id.yaml"
+  deploy_file_path="$script_dir/microk8s/k8s-deployment_$id.yaml"
 
   # sed script command
   sed_cmd='s|${CLIENT_NAME}|'"$client"'|g;s|${CONTAINER_NAME}|'"$container_name"'|g;s|${IMAGE_TAG}|'"$reg_tag"'|g'
@@ -165,7 +165,7 @@ else
   if [ $verbose -eq $TRUE ]; then
     echo ""
     docker image tag "$image_tag" "$reg_tag"
-    # Importing new tag to Microk8s register 
+    # Importing new tag to MicroK8s register 
     if [ $? -eq 0 ]; then docker push "$reg_tag"; fi
     # Apply deployment file on MicroK8s
     if [ $? -eq 0 ]; then microk8s kubectl create -f "$deploy_file_path"; fi
@@ -184,7 +184,7 @@ else
   fi
 
   echo "Done."
-  echo "The proxy has been deployed on Microk8s."
+  echo "The proxy has been deployed on MicroK8s."
 fi
 
 # Storing the deployment in installs file. When deploy_file_path value equals "0", the deployment

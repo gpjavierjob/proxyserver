@@ -36,6 +36,13 @@ cache_dir="$data_dir/cache"
 
 echo -n "Doing ubuntu-squid configuration ... "
 
+getent passwd proxy > /dev/null 2>&1
+
+# Crear el usuario proxy si aún no existe
+if [ $? -ne 0 ]; then
+  useradd -U -u 31 -r -M -d /bin -s /usr/sbin/nologin -c proxy proxy
+fi
+
 if [ $verbose -eq $TRUE ]; then
   echo ""
   chown -v -R proxy: ${logs_dir} ${cache_dir}

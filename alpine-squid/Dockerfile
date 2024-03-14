@@ -24,17 +24,8 @@ ARG SQUID_VERSION=6.6-r0
 # hadolint ignore=DL3018
 RUN apk "--no-cache" "add" "ca-certificates" "squid=$SQUID_VERSION" "tzdata" \
     && chmod 755 /usr/local/bin/uid-entrypoint.sh \
-    # && addgroup -S "$SQUID_USER" && adduser -S -D -H "$SQUID_USER" "$SQUID_USER" \
     && mkdir "-p" "$SQUID_SNIPPETS_DIR" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR" \
     && chown "-R" "$SQUID_USER:" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
-
-    # && chgrp -R 0 "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR" \
-    # && chmod -R g=u /etc/passwd "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
-
-    # && chmod "-R" "755" "$SQUID_LOG_DIR" \
-    # # && adduser "-SDH" "-u" "$SQUID_USER_ID" "$SQUID_USER" \
-    # && chown "-R" "$SQUID_USER:" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
-    # # && chown "-R" "$SQUID_USER:$SQUID_USER_GROUP" "$SQUID_LOG_DIR" "$SQUID_CACHE_DIR"
 
 COPY files/squid.conf /etc/squid/
 COPY files/snippet.conf /etc/squid/conf.d/

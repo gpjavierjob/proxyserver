@@ -36,8 +36,11 @@ cache_dir="$data_dir/cache"
 
 echo -n "Doing alpine-squid configuration ... "
 
-if [ "$(id squid > /dev/null 2>&1 ; echo "$?")" -gt 0 ]; then 
-  useradd -U -u 31 -r -M -d /bin -s /usr/sbin/nologin squid
+id squid > /dev/null 2>&1
+
+# Crear el usuario squid si aún no existe
+if [ $? -ne 0 ]; then 
+  useradd -U -u 31 -r -M -d /bin -s /usr/sbin/nologin -c squid squid
 fi
 
 if [ $verbose -eq $TRUE ]; then
