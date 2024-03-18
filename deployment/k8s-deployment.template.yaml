@@ -72,5 +72,5 @@ spec:
     app: ${CLIENT_NAME}-${CONTAINER_NAME}
   ports:
     - protocol: TCP
-      port: 3128
+      port: ${PORT}
       targetPort: 3128
