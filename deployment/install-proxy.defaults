@@ -3,6 +3,7 @@ ips=172.17.0.1
 username=javier
 password=javier
 timezone=
+port=
 image_tag=
 container_name=
 _image_tag=gpjavierjob/alpine-squid:6.6-r0

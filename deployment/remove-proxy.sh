@@ -5,13 +5,13 @@ usage() {
   printf "\n"
   printf "Desinstala el proxy del cliente con el nombre de contenedor proporcionado. El nombre del\n"
   printf "cliente es un parámetro obligatorio, mientras que el nombre del contenedor es opcional.\n"
-  printf "Si no se proporciona el nombre del contenedor se utilizará ubuntu/squid:5.2-22.04_beta\n"
-  printf "como valor predeterminado. Detecta, a partir del archivo installs, si la instalación\n"
-  printf "fue en Docker o MicroK8s.\n"
+  printf "Si no se proporciona el nombre del contenedor se utilizará ubuntu-squid como valor\n"
+  printf "predeterminado. Detecta, a partir del archivo installs, si la instalación se realizó\n"
+  printf "en Docker o MicroK8s.\n"
   printf "\n"
   printf " OPTIONS\n"
   printf "  -c --client\t\tNombre del cliente (obligatorio).\n"
-  printf "  -n --container-name\t\tNombre del contenedor docker de Squid a crear y ejecutar (opcional).\n"
+  printf "  -n --container-name\t\tNombre del contenedor docker de Squid (opcional).\n"
   printf "  -v --verbose\t\tExplica los pasos que se están ejecutando con más detalles.\n"
   printf "  -h --help\t\tImprime esta ayuda.\n"
   exit 1
@@ -125,6 +125,7 @@ fi
 
 # Removing the installation configuration 
 if [ -w ${installs_path} ]; then
+  # Removes the line where the client name appears from installs file
   sed -i.bkp "/$client/d" "$installs_path"
 else
   echo "The installs file has not been updated"

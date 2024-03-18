@@ -3,8 +3,9 @@
 usage() {
   printf "build-image [-a|--alpine] <alpine version> [-s|--squid] <squid version>\n"
   printf " \n"
-  printf " Builds an image of squid using the given versions of squid and alpine linux.\n"
-  printf " If no versions are given, the latest version of alpine linux and squid 6.6-r0 are used.\n"
+  printf " Construye una imagen de Squid utilizando las versiones de Alpine Linux y Squid proporcionadas.\n"
+  printf " Si no se proporcionan, se utilizan la última de versión de Alpine Linux y la versión.\n"
+  printf " 6.6-r0 de Squid.\n"
   printf " \n"
   printf " OPTIONS\n"
   printf "  -a --alpine\t\tthe version of alpine linux (optional)\n"
