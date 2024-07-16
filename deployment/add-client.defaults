@@ -1,0 +1,2 @@
+qr_string="username=$username;password=$password"
+ip_separator=,

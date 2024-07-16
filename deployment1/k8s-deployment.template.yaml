@@ -1,36 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${SERVER_NAME}-${CONTAINER_NAME}-deploy
+  name: ${CLIENT_NAME}-${CONTAINER_NAME}-deploy
   labels:
-    app: ${SERVER_NAME}-${CONTAINER_NAME}
+    app: ${CLIENT_NAME}-${CONTAINER_NAME}
 spec:
-  replicas: ${REPLICAS}
+  replicas: 1
   selector:
     matchLabels:
-      app: ${SERVER_NAME}-${CONTAINER_NAME}
+      app: ${CLIENT_NAME}-${CONTAINER_NAME}
   template:
     metadata:
       labels:
-        app: ${SERVER_NAME}-${CONTAINER_NAME}
+        app: ${CLIENT_NAME}-${CONTAINER_NAME}
     spec:
       volumes:
-        - name: ${SERVER_NAME}-${CONTAINER_NAME}-cache
+        - name: ${CLIENT_NAME}-${CONTAINER_NAME}-cache
           emptyDir:
             sizeLimit: 13.4Gi
-        - name: ${SERVER_NAME}-${CONTAINER_NAME}-log
+        - name: ${CLIENT_NAME}-${CONTAINER_NAME}-log
           emptyDir: 
             sizeLimit: 200Mi
-        - name: ${SERVER_NAME}-${CONTAINER_NAME}-snip
+        - name: ${CLIENT_NAME}-${CONTAINER_NAME}-snip
           hostPath:
-            path: /etc/squid/${SERVER_NAME}/conf.d
+            path: /etc/squid/${CLIENT_NAME}/conf.d
             type: Directory
-        - name: ${SERVER_NAME}-${CONTAINER_NAME}-conf
+        - name: ${CLIENT_NAME}-${CONTAINER_NAME}-conf
           hostPath:
-            path: /etc/squid/${SERVER_NAME}/squid.conf
+            path: /etc/squid/${CLIENT_NAME}/squid.conf
             type: File
       containers:
-      - name: ${SERVER_NAME}-${CONTAINER_NAME}
+      - name: ${CLIENT_NAME}-${CONTAINER_NAME}
         image: ${IMAGE_TAG}
         ports:
         - containerPort: 3128
@@ -42,13 +42,13 @@ spec:
             memory: "128Mi"  # Initial memory request - 6,7 GB of cache size (5 GB + 25% for indexing)
             cpu: "100m"       # Initial CPU request        
         volumeMounts:
-          - name: ${SERVER_NAME}-${CONTAINER_NAME}-log
+          - name: ${CLIENT_NAME}-${CONTAINER_NAME}-log
             mountPath: "/var/log/squid"
-          - name: ${SERVER_NAME}-${CONTAINER_NAME}-cache
+          - name: ${CLIENT_NAME}-${CONTAINER_NAME}-cache
             mountPath: "/var/spool/squid"
-          - name: ${SERVER_NAME}-${CONTAINER_NAME}-snip
+          - name: ${CLIENT_NAME}-${CONTAINER_NAME}-snip
             mountPath: "/etc/squid/conf.d"
-          - name: ${SERVER_NAME}-${CONTAINER_NAME}-conf
+          - name: ${CLIENT_NAME}-${CONTAINER_NAME}-conf
             mountPath: "/etc/squid/squid.conf"
       # - name: tailer
       #   image: busybox
@@ -65,11 +65,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ${SERVER_NAME}-${CONTAINER_NAME}-service
+  name: ${CLIENT_NAME}-${CONTAINER_NAME}-service
 spec:
   type: LoadBalancer
   selector:
-    app: ${SERVER_NAME}-${CONTAINER_NAME}
+    app: ${CLIENT_NAME}-${CONTAINER_NAME}
   ports:
     - protocol: TCP
       port: ${PORT}

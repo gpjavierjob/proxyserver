@@ -1,4 +1,4 @@
-name=javier
+client=javier
 ips=172.17.0.1
 username=javier
 password=javier
@@ -6,8 +6,6 @@ timezone=
 port=
 image_tag=
 container_name=
-microk8s=1
 _image_tag=gpjavierjob/alpine-squid:6.6-r0
 _container_name=alpine-squid
-_microk8s=0
-replicas=2
+microk8s=1

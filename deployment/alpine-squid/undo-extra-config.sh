@@ -1,13 +1,13 @@
 #!/bin/sh
 
 usage() {
-  printf "undo-extra-config [-c|--client] <client name>\n"
+  printf "undo-extra-config [-n|--name] <name>\n"
   printf "\n"
   printf "Deshace las ooperaciones de configuración propias del contenedor, que no son\n"
   printf "comunes a otros contenedores squid.\n"
   printf "\n"
   printf " OPTIONS\n"
-  printf "  -c --client\t\tNombre del cliente (obligatorio).\n"
+  printf "  -n --name\t\tNombre del servidor (obligatorio).\n"
   printf "  -v --verbose\t\tExplicación detallada de los pasos que se están ejecutando.\n"
   printf "  -h --help\t\tImprime esta ayuda.\n"
   exit 1
@@ -20,7 +20,7 @@ verbose=$FALSE
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    -c|--client) client="$2" shift ;;
+    -n|--name) name="$2" shift ;;
     -v|--verbose) verbose=$TRUE;;
     -h|--help) usage ;;
             *) usage ;;
@@ -28,14 +28,14 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-[ -z "$client" ] && usage
+[ -z "$name" ] && usage
 
-data_dir="/var/squid/$client"
+data_dir="/var/squid/$name"
 logs_dir="$data_dir/logs"
 cache_dir="$data_dir/cache"
 
-echo -n "Undoing alpine-squid configuration ... "
+[ $verbose -eq $TRUE ] && echo "Undoing alpine-squid configuration ... "
 
 # Write your code here
 
-echo "Done."
+[ $verbose -eq $TRUE ] && echo "... alpine-squid configuration undone."

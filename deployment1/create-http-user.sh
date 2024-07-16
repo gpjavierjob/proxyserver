@@ -49,11 +49,12 @@ else
 fi
 
 if [ $? -gt 0 ]; then
-  echo "Error: The password was not created."
+  echo "Error creating the password."
   return 1
 fi
 
+echo "User/password creation done."
+
 if [ $verbose -eq $TRUE ]; then
-  echo "User/password creation done."
   echo "Your HTPASSWD file is available at $filepath."
 fi
