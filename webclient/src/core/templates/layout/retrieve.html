@@ -1,0 +1,14 @@
+{% from "macros/delete_confirmation.html" import render_delete_dlg, render_delete_button %}
+{% from "macros/fields.html" import render_field %}
+
+{% extends "layout/base.html" %}
+
+{%- block css %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('core.static', filename='css/form.css') }}">
+{%- endblock css %}
+
+{%- block content %}
+{%- block retrieve_widget -%}
+{% include "includes/retrieve_widget.html" %}
+{%- endblock retrieve_widget %}
+{%- endblock content %}

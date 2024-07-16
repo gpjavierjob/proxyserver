@@ -1,0 +1,15 @@
+{% extends "layout/list.html" %}
+
+{% block css %}
+{{ super() }}
+<style>
+  #th-client-name, #td-client-name  {  width: 40%; }
+  #th-client-email, #td-client-email  {  width: 45%; }
+  #th-client-state, #td-client-state  { width: 10%; }
+  #th-client-action, #td-client-action  { width: 5%; }
+</style>
+{% endblock css %}
+
+{% block list_widget %}
+{% include "/widgets/client/list_widget.html" %}
+{% endblock list_widget %}

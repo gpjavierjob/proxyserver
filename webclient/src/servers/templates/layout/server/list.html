@@ -1,0 +1,10 @@
+{% extends "layout/list.html" %}
+
+{%- block css %}
+{{- super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('servers.static', filename='css/server-list.css') }}">
+{%- endblock css %}
+
+{%- block list_widget -%}
+{% include "/widgets/server/list_widget.html" %}
+{%- endblock list_widget %}

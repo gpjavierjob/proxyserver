@@ -1,0 +1,25 @@
+/* Form view for retrieve, update and create widgets */
+
+#button-close {
+    color: default;
+  }
+  
+dt { 
+  float: left; 
+  clear: left; 
+  width: 110px; 
+  font-weight: bold; 
+  padding:2px 0px 0px 0;
+} 
+
+dd { 
+  margin: 0 0 0 80px; 
+  padding: 0 0 0.5em 0; 
+} 
+
+[disabled], [readonly], textarea[readonly] {
+  background-color: field;
+  color: fieldText;
+  border-width: 1px;
+  border-style: solid;
+}

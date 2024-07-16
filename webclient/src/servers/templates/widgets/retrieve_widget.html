@@ -1,0 +1,17 @@
+{% extends "includes/retrieve_widget.html" %}
+
+{%- block form_block scoped %}
+{{- super() }}
+{%- block async_operation_block %}
+        <div class="alert alert-danger">
+          <strong>Error!</strong> {% block async_operation_errmsg %}{% endblock %}
+  {%- block async_operation_button_block %}
+          <span style="float:right;vertical-align: top;" >
+            <form action="{% block async_operation_url %}{% endblock %}" method="post">
+              <input id="submit" class="btn btn-primary btn-sm" type="submit" value="{% block async_operation_title %}Retry{% endblock %}">
+            </form>
+          </span>
+  {%- endblock async_operation_button_block %}
+        </div>
+{%- endblock async_operation_block %}
+{%- endblock form_block %}

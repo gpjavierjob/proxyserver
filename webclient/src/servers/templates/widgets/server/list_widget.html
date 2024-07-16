@@ -1,0 +1,7 @@
+{% extends "includes/list_widget.html" %}
+
+{%- block delete_button_block scoped %}
+{%- if obj.state != SERVER_STATE_REMOVING -%}
+{{ super() }}
+{%- endif %}
+{%- endblock %}

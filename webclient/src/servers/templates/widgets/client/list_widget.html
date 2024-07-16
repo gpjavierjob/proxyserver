@@ -1,0 +1,20 @@
+{% extends "includes/list_widget.html" %}
+
+{%- block create_button_block %}
+    <div class="p-1">
+      <form method='get' action="{{ url_for('servers.retrieve_server', id=server.id) }}">
+        <div id="{{ id_prefix }}close-button" class="clearfix">
+          <input class="float-end btn btn-link" type="submit" value="{{ 'Go to server' }}"/>
+        </div>
+      </form>
+    </div>
+{%- if server.state == SERVER_STATE_EXECUTING -%}
+{{ super() }}
+{%- endif %}
+{%- endblock %}
+
+{%- block delete_button_block scoped %}
+{%- if obj.state != CLIENT_STATE_REMOVING -%}
+{{ super() }}
+{%- endif %}
+{%- endblock %}

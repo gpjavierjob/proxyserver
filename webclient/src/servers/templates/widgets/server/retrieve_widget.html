@@ -1,0 +1,40 @@
+{% extends "widgets/retrieve_widget.html" %}
+
+{%- block delete_button_block scoped %}
+{%- if not context.form.state.data in [SERVER_STATE_REMOVING] -%}
+{{ super() }}
+{%- endif %}
+{%- endblock delete_button_block %}
+
+{%- block update_button_block scoped %}
+{# {%- if not context.form.state.data in [SERVER_STATE_REMOVING, SERVER_STATE_CREATING] -%} #}
+{# {{ super() }} #}
+{# {%- endif %} #}
+{%- endblock update_button_block %}
+
+{%- block async_operation_block %}
+{%- if context.form.errmsg.data -%}
+{{ super() }}
+{%- endif %}
+{%- endblock async_operation_block %}
+
+{%- block async_operation_errmsg %}{{ context.form.errmsg.data | safe }}{%- endblock async_operation_errmsg %}
+
+{%- block async_operation_button_block %}
+{%- if context.form.state.data == SERVER_STATE_FAILED and context.form.prev_state.data == SERVER_STATE_CREATING %}
+{{ super() }}
+{%- endif %}
+{%- endblock async_operation_button_block %}
+
+{% block async_operation_url %}{{ url_for('servers.install_server', id=context.form.id.data) }}{% endblock %}
+
+{% block async_operation_title %}Install{% endblock %}
+
+{%- block form_block scoped %}
+        <span class="float-end">
+          <form action="{{ url_for('servers.list_clients', server_id=context.form.id.data)}}" method="get">
+            <input id="{{ id_prefix }}-show-clients" class="btn btn-primary" type="submit" value="{{ 'Show clients' }}">
+          </form>
+        </span>
+{{- super() }}
+{%- endblock form_block %}

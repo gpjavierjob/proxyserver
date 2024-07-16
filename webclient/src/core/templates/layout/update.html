@@ -1,0 +1,13 @@
+{% from "macros/fields.html" import render_field %}
+
+{% extends "layout/base.html" %}
+
+{%- block css %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('core.static', filename='css/form.css') }}">
+{%- endblock css %}
+
+{%- block content %}
+{%- block update_widget -%}
+{% include "includes/update_widget.html" %}
+{%- endblock update_widget %}
+{%- endblock content %}

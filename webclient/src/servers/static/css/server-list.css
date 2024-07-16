@@ -1,0 +1,23 @@
+.hidder { width: 100%; }
+@media screen and (max-width:768px) {
+  .hidder th:nth-child(2),
+  .hidder td:nth-child(2),
+  .hidder th:nth-child(3),
+  .hidder td:nth-child(3),
+  .hidder th:nth-child(4),
+  .hidder td:nth-child(4),
+  .hidder th:nth-child(5),
+  .hidder td:nth-child(5),
+  .hidder th:nth-child(6),
+  .hidder td:nth-child(6)
+  { display: none; }
+}
+
+#th-server-name, #td-server-name  {  width: 15%; }
+#th-server-namespace, #td-server-namespace  {  width: 15%; }
+#th-server-hostname, #td-server-hostname  { width: 25%; }
+#th-server-protocol, #td-server-protocol  { width: 10%; }
+#th-server-port, #td-server-port  { width: 10%; }
+#th-server-appversion, #td-server-appversion  { width: 10%; }
+#th-server-state, #td-server-state  { width: 10%; }
+#th-server-action, #td-server-action  { width: 5%; }

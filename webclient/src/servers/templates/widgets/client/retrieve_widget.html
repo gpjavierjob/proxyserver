@@ -1,0 +1,27 @@
+{% extends "widgets/retrieve_widget.html" %}
+
+{%- block delete_button_block scoped %}
+{%- if context.form.state.data not in [CLIENT_STATE_REMOVING, CLIENT_STATE_CREATING] -%}
+{{ super() }}
+{%- endif %}
+{%- endblock delete_button_block %}
+
+{%- block update_button_block scoped %}
+{%- if not context.form.state.data in [CLIENT_STATE_REMOVING, CLIENT_STATE_ADDING] -%}
+{{ super() }}
+{%- endif %}
+{%- endblock update_button_block %}
+
+{%- block async_operation_block %}
+{%- if context.form.errmsg.data -%}
+{{ super() }}
+{%- endif %}
+{%- endblock async_operation_block %}
+
+{%- block async_operation_errmsg %}{{ context.form.errmsg.data | safe | trim }}{% endblock async_operation_errmsg %}
+
+{%- block async_operation_button_block %}
+{%- if context.form.state.data == CLIENT_STATE_FAILED -%}
+{{ super() }}
+{%- endif %}
+{%- endblock async_operation_button_block %}

@@ -1,0 +1,37 @@
+{%- set id_prefix = '%s-' | format(context.model_name) if context.model_name | trim | lower else '' %}
+      <form action="{{ context.update_url }}" method="post">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start flex-row-reverse">
+{%- block close_button_block %}
+          <div class="p-1">
+            <button id="{{ id_prefix }}close-button" type="button" class="btn btn-link form-button">
+              <a id="{{ id_prefix }}close-anchor" href="{{ context.close_url }}">{{ context.close_button_title }}</a>
+            </button>
+          </div>
+{%- endblock close_button_block %}
+{%- block update_button_block %}
+          <div class="p-1">
+            <input id="{{ id_prefix }}update-button" class="btn btn-primary" type="submit" value="{{ context.update_button_title }}">
+          </div>
+{%- endblock update_button_block %}
+          <div class="p-9 flex-grow-1">
+            <h1 class="content-title">{{ context.title | safe }}</h1>
+          </div>
+        </div>
+        <hr>
+        <div id="{{ id_prefix }}content-div" class="col-md-12">
+{{- context.form.csrf_token }}
+{{- context.form.hidden_tag() }}
+          <dl>
+{%- for field in context.fields -%}
+  {% if context.is_field_hidden(field) %}
+    {{- render_field(context.form[field], hidden=True) -}}
+  {% elif context.is_field_disabled(field) %}
+    {{- render_field(context.form[field], readonly=True, disabled=True) }}
+  {% else %}
+    {{- render_field(context.form[field]) }}
+  {%- endif %}
+{%- endfor %}
+          </dl>
+        </div>
+        <hr>
+      </form>

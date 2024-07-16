@@ -1,0 +1,54 @@
+{%- set id_prefix = '%s-' | format(context.model_name) if context.model_name | trim | lower else '' %}
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start flex-row-reverse">
+{%- block create_button_block %}
+        <div class="p-1">
+          <form method='get' action="{{ context.create_url }}">
+            <div id="{{ id_prefix }}new-button" class="clearfix">
+              <input class="float-end btn btn-primary" type="submit" value="{{ context.create_button_title }}"/>
+            </div>
+          </form>
+        </div>
+{%- endblock %}
+        <div class="p-9 flex-grow-1">
+          <h1 class="content-title">{{ context.title | safe }}</h1>
+        </div>
+      </div>
+      <div id="{{ id_prefix }}list-div" class="col-md-12">
+        <table id="{{ id_prefix }}list-table" class="table model-list">
+          <thead>
+            <tr>
+{%- for field, label in context.labels.items() %}
+              <th id="th-{{ id_prefix }}{{ field }}">{{ label }}</th>
+{%- endfor %}
+              <th id="th-{{ id_prefix }}action">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+{%- for obj in context.objs %}
+  {%- set obj_loop = loop %}
+            <tr id="{{ id_prefix }}{{ obj.id }}" class="{{ obj.state }}" onclick="onRowClick(event)">
+  {%- for field in context.fields %}
+              <td id="td-{{ id_prefix }}{{ field }}">{{ context.getValue(obj, field) }}</td>
+  {%- endfor %}
+              <td id="td-{{ id_prefix }}action">
+  {%- block delete_button_block scoped -%}
+    {{ render_delete_small_button(obj.id, context.delete_button_title, obj_id_prefix=id_prefix) }}
+  {%- endblock %}
+                <form id="show-details-{{ id_prefix }}{{ obj.id }}" action="{{ context.retrieve_urls[obj_loop.index0] }}" method="get">
+                </form>
+              </td>
+            </tr>
+{%- endfor %}
+{%- if context.objs | length == 0 -%}
+            <tr><td colspan="{{ models | length }}">{{ context.empty_list_msg }}</td></tr>
+{%- endif %}
+          </tbody>
+        </table>
+      </div>
+{{- render_delete_dlgs(context.delete_dialog_title,
+                       context.delete_dialog_msg,
+                       context.delete_dialog_submit_title,
+                       context.delete_dialog_cancel_title,
+                       context.delete_urls,
+                       context.objs,
+                       id_prefix) -}}

@@ -1,0 +1,37 @@
+/* List View */
+
+#new-button {
+  vertical-align: bottom;
+}
+
+.model-list tr.failed {
+  color: red;
+}
+
+.model-list tr.creating, .model-list tr.adding {
+  color: blue;
+}
+
+.model-list tr.removing {
+  color: orange;
+}
+
+.model-list {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.model-list td, th {
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.model-list td {
+  text-align: left;
+}
+
+.model-list tbody tr:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}

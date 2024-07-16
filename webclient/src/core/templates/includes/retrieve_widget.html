@@ -1,0 +1,51 @@
+{%- set id_prefix = '%s-' | format(context.model_name) if context.model_name | trim | lower else '' %}
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start flex-row-reverse">
+{%- block close_button_block %}
+        <div class="p-1">
+          <button id="{{ id_prefix }}close-button" type="button" class="btn btn-link form-button">
+            <a id="{{ id_prefix }}close-anchor" href="{{ context.close_url }}">{{ context.close_button_title }}</a>
+          </button>
+        </div>
+{%- endblock %}
+{%- block delete_button_block scoped %}
+        <div class="p-1">
+          {{- render_delete_button(context.form.id.data, context.delete_button_title, id_prefix ) }}
+        </div>
+{%- endblock delete_button_block %}
+{%- block update_button_block %}
+        <div class="p-1">
+          <form action="{{ context.update_url }}" method="get">
+            <input id="{{ id_prefix }}update-button" class="btn btn-primary form-button" type="submit" value="{{ context.update_button_title }}">
+          </form>
+        </div>
+{%- endblock update_button_block %}
+        <div class="p-9 flex-grow-1">
+          <h1 class="content-title">{{ context.title | safe }}</h1>
+        </div>
+      </div>
+      <hr>
+      <div id="{{ id_prefix }}content-div" class="col-md-12">
+{%- block form_block scoped %}
+        <form action="{{ context.retrieve_url }}" method="get">
+  {{- context.form.csrf_token }}
+  {{- context.form.hidden_tag() }}
+          <dl>
+  {%- for field in context.fields %}
+    {%- if context.is_field_hidden(field) %}
+      {{- render_field(context.form[field], hidden=True) }}
+    {%- else %}
+      {{- render_field(context.form[field], readonly=True, disabled=True) }}
+    {%- endif %}
+  {%- endfor %}
+          </dl>
+        </form>
+{%- endblock form_block %}
+      </div>
+      <hr>
+{{- render_delete_dlg(context.delete_dialog_title,
+                     context.delete_dialog_msg,
+                     context.delete_dialog_submit_title,
+                     context.delete_dialog_cancel_title,
+                     context.delete_url,
+                     context.form.id.data,
+                     id_prefix) }}

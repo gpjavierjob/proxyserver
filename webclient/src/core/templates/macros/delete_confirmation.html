@@ -1,0 +1,63 @@
+{%- macro render_delete_dlgs(title, msg, submit_title, cancel_title, submit_urls, objs, obj_id_prefix="") %}
+      <!-- Confirmation Modals -->
+{%- for obj in objs -%}
+{{ render_delete_dlg(title, 
+                     msg | format(obj.name) | safe,
+                     submit_title,
+                     cancel_title, 
+                     submit_urls[loop.index0] | trim,
+                     obj.id,
+                     obj_id_prefix=obj_id_prefix) }}
+{%- endfor %}
+      <!-- End Modals -->
+{%- endmacro -%}
+
+{%- macro get_modal_id(id_prefix, id) %}
+{{- '%s%s' | format(id_prefix, id) if id_prefix else id | string }}
+{%- endmacro -%}
+
+{%- macro render_delete_dlg(title, msg, submit_title, cancel_title, submit_url, obj_id, obj_id_prefix="") %}
+      <!-- Confirmation modal for {{ get_modal_id(obj_id_prefix, obj_id) }} -->
+      <div class="modal fade" id="modal-{{ get_modal_id(obj_id_prefix, obj_id) }}" 
+           role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">{{ title }}</h4>
+              <button type="button" class="close btn btn-default" style="float:right" 
+                      data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form action="{{ submit_url }}" method="post">
+              <div class="modal-body">
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">{{ msg }}</label>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ cancel_title if submit_title else 'Cancel' }}</button>
+                <button type="submit" class="btn btn-danger">{{ submit_title if submit_title else 'OK'}}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+{%- endmacro -%}
+
+{%- macro render_delete_image(obj_id, image_path, image_size=16, obj_id_prefix="") %}
+                <!-- Image for calling confirmation modal for {{ get_modal_id(obj_id_prefix, obj_id) | trim }} -->
+                <button class="like-anchor" style="float:right" data-bs-toggle="modal" data-bs-target="#modal-{{ get_modal_id(obj_id_prefix, obj_id) | trim }}">
+                  <img src="{{ image_path }}" alt="Delete" width="{{ image_size }}" height="{{ image_size }}">
+                </button>
+{%- endmacro -%}
+
+{%- macro render_delete_button(obj_id, title, obj_id_prefix="") %}
+          <!-- Button for calling confirmation modal for {{ get_modal_id(obj_id_prefix, obj_id) | trim }} -->
+          <input class="btn btn-danger" type="submit" value="{{ title if title else 'Delete' }}" 
+                data-bs-toggle="modal" data-bs-target="#modal-{{ get_modal_id(obj_id_prefix, obj_id) | trim }}">
+{%- endmacro -%}
+
+{%- macro render_delete_small_button(obj_id, title, obj_id_prefix="") %}
+                <!-- Button for calling confirmation modal for {{ get_modal_id(obj_id_prefix, obj_id) | trim }} -->
+                <input class="btn btn-danger btn-sm" type="button" value="{{ title if title else 'Delete' }}" 
+                      data-bs-toggle="modal" data-bs-target="#modal-{{ get_modal_id(obj_id_prefix, obj_id) | trim }}">
+{%- endmacro -%}

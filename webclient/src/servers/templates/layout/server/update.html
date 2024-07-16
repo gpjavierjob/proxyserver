@@ -1,0 +1,9 @@
+{% extends "layout/update.html" %}
+
+{%- block update_widget -%}
+{% include "includes/update_widget.html" %}
+{%- endblock update_widget %}
+
+{%- block js %}
+    <script src="{{ url_for('servers.static', filename='js/server-edit.js') }}"></script>
+{%- endblock %}
